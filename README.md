@@ -14,29 +14,29 @@ License: **MIT** (see `LICENSE.md`)
 
 - [IPK25-CHAT Client Application: Project Documentation](#ipk25-chat-client-application-project-documentation)
   - [Installation and Running](#installation-and-running)
-- [Theoretical Knowledge Required](#theoretical-knowledge-required)
-  - [Transmission Control Protocol](#transmission-control-protocol)
-  - [User Datagram Protocol](#user-datagram-protocol)
-  - [IPK25CHAT Protocol](#ipk25chat-protocol)
-- [Implementation Details](#implementation-details)
-  - [Message Representation](#message-representation)
-  - [Connection](#connection)
-  - [Asynchronous Communication Issues](#asynchronous-communication-issues)
-  - [Incoming Messages Parsing](#incoming-messages-parsing)
-  - [Implementation Summaries](#implementation-summaries)
-- [Testing](#testing)
-  - [Environment](#environment)
-  - [Local Testing](#local-testing)
-    - [No reply to auth message](#no-reply-to-auth-message)
-    - [Correct auth reply](#correct-auth-reply)
-    - [Longer conversation with join](#longer-conversation-with-join-)
-    - [Error handling](#error-handling)
-    - [UDP variant](#udp-variant)
-  - [Testing via Discord server](#testing-via-discord-server)
-    - [TCP](#tcp)
-    - [UDP](#udp)
-  - [Summaries](#summaries)
-- [Bibliography](#bibliography)
+  - [Theoretical Knowledge Required](#theoretical-knowledge-required)
+    - [Transmission Control Protocol](#transmission-control-protocol)
+    - [User Datagram Protocol](#user-datagram-protocol)
+    - [IPK25CHAT Protocol](#ipk25chat-protocol)
+  - [Implementation Details](#implementation-details)
+    - [Message Representation](#message-representation)
+    - [Connection](#connection)
+    - [Asynchronous Communication Issues](#asynchronous-communication-issues)
+    - [Incoming Messages Parsing](#incoming-messages-parsing)
+    - [Implementation Summaries](#implementation-summaries)
+  - [Testing](#testing)
+    - [Environment](#environment)
+    - [Local Testing](#local-testing)
+      - [No reply to auth message](#no-reply-to-auth-message)
+      - [Correct auth reply](#correct-auth-reply)
+      - [Longer conversation with join](#longer-conversation-with-join-)
+      - [Error handling](#error-handling)
+      - [UDP variant](#udp-variant)
+    - [Testing via Discord server](#testing-via-discord-server)
+      - [TCP](#tcp)
+      - [UDP](#udp)
+    - [Summaries](#summaries)
+  - [Bibliography](#bibliography)
 
 ## Installation and Running
 
@@ -115,7 +115,7 @@ be defined in its ancestors, specifically for each type:
 |------------------------------|----------------------------------------------------------------|
 | `string ToFormattedOutput()` | Returns message as user readable string for application output |
 | `string ToTcpString()`       | Returns message as IPK25-CHAT TCP compatible string            |
-| `byte[] ToUdpBytes()`        | Returns message as IPK25-CHAT UDP compatible string            |
+| `byte[] ToUdpBytes()`        | Returns message as IPK25-CHAT UDP compatible byte array        |
 
 If specific message type does not have to implement some method, `NotImplementedException` will
 be called when trying to access it.
@@ -140,15 +140,15 @@ First of all, it contains many variant-independent fields like `DisplayName` or 
 
 It also declares async methods (or Tasks, in terms of C#) to be defined in child classes:
 
-| Method                | Description                                                                       |
-|-----------------------|-----------------------------------------------------------------------------------|
+| Method                  | Description                                                                       |
+|-------------------------|-----------------------------------------------------------------------------------|
 | `ProcessConnection()`   | Starts and completely processes new chat session                                  |
-| `SendMessages()`      | Starts and manages a thread responsible for sending user messages (FSM)             |
+| `SendMessages()`        | Starts and manages a thread responsible for sending user messages (FSM)           |
 | `Send(Message message)` | Sends specified message to the server. In case of UDP also waits for confirmation |
 | `ReplyM? WaitReply()`   | Waits 5 seconds for a reply from the server                                       |
 | `ReceiveMessages()`     | Starts and manages a thread responsible for receiving server messages (FSM)       |
-| `SendBye()`             | Sends `Bye` message and finishes the program with success                           |
-| `SendErr()`             | Sends `Err` message, prints it locally and finishes the program with error          | 
+| `SendBye()`             | Sends `Bye` message and finishes the program with success                         |
+| `SendErr(string text)`  | Sends `Err` message, prints it locally and finishes the program with error        | 
 
 Using 2 different threads to send and receive messages helps to avoid issues connected to active waiting in
 e.g. `Console.ReadLine()`. 
