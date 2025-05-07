@@ -1,6 +1,6 @@
 
 build:
-	dotnet publish -c Release  -o .
+	dotnet publish -c Release -p:PublishSingleFile=true --self-contained true -p:PublishTrimmed=true -o .
 	
 run-ds-tcp: build
 	./ipk25chat-client -t tcp -s anton5.fit.vutbr.cz -p 4567 
