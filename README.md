@@ -88,7 +88,7 @@ UDP trades accuracy for speed and low latency.
 And now simple strings are not enough, 
 byte arrays are needed for communication.
 
-> As wee see, reliability here must be handled by the application, if we want it. The task 
+> As we see, reliability here must be handled by the application, if we want it. The task 
 offers us to use identifiers and confirm messages, that is possible solution, even though it noticeably
 complicates the implementation.
 
@@ -395,8 +395,8 @@ meno: hello
 ### Summaries
 
 As we can see, program works as it is supposed to, at least during basic use cases.
-Of course, it is hard to predict the behavior in more extreme cases, e.g. very big online and
-lots of messages being sent. Complications with this also seem quite possible because of
+Of course, it is hard to predict the behavior in more extreme cases, e.g. when the server online is high and
+lots of messages are being sent. Complications with this also seem quite possible because of
 the [synchronization](#asynchronous-communication-issues) method used.
 
 > It is also worth mentioning that no Unit testing was done, mostly due to the lack of time.
